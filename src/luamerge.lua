@@ -84,6 +84,7 @@ local define = function(path, factory)
     preload[path] = factory
 end
 
+-- define modules start
 
 ]]
 print(projectdir..'/'..config.workdir)
@@ -99,6 +100,10 @@ attrDir(projectdir..'/'..config.workdir, function(filepath)
         mergefilestr = mergefilestr .. ('\n')
     end
 end)
+mergefilestr = mergefilestr..[[
+-- define modules end
+
+]]
 mergefilestr = mergefilestr .. ([[return _require(']] .. config.entrancefile .. [[', unpack(args))]])
 mergefile:write(mergefilestr)
 mergefile:close()

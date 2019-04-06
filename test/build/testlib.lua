@@ -1,5 +1,5 @@
 -- created by lua-merge(https://github.com/wuluwululang/lua-merge)
--- datetime: 2019/04/06 16:28:47
+-- datetime: 2019/04/06 16:40:30
 
 local args = { ... }
 local oriRequire = require
@@ -23,6 +23,7 @@ local define = function(path, factory)
     preload[path] = factory
 end
 
+-- define modules start
 
 define('api', loadstring([==[function(require, ...)return {
     testfunc = require('impl').testfunc,
@@ -31,5 +32,7 @@ define('api', loadstring([==[function(require, ...)return {
 define('impl', loadstring([==[function(require, ...)return {
     testfunc = function() end
 }end]==],'?.impl')())
+
+-- define modules end
 
 return _require('api', unpack(args))
