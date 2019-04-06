@@ -1,0 +1,3 @@
+return {
+    testfunc = function() end
+}
