@@ -61,33 +61,13 @@ lfs.mkdir(currentdir ..'/'..projectdir..'/'.. (config.exportdir))
 local mergefile = assert(io.open(currentdir ..'/'..projectdir..'/'..(config.exportdir)..'/'..(config.exportfile), 'w+'))
 local mergefilestr = string.format([[-- created by lua-merge(https://github.com/wuluwululang/lua-merge)
 -- datetime: %s]], os.date('%Y/%m/%d %H:%M:%S'))
-mergefilestr = mergefilestr..'\n\n'..[[
-local args = { ... }
-local oriRequire = require
-local loadstring = loadstring
-local unpack = unpack
-local preload = {}
-local loaded = {}
-local _require = function(path, ...)
-    if loaded[path] then
-        return loaded[path]
-    end
-    if preload[path] then
-        local func = preload[path]
-        local mod = func(...) or true
-        loaded[path] = mod
-        return mod
-    end
-    return oriRequire(path, ...)
-end
-local define = function(path, factory)
-    preload[path] = factory
-end
+mergefilestr = mergefilestr..'\n\n'..[[local args = { ... }; local oriRequire = require; local loadstring = loadstring; local unpack = unpack; local preload = {}; local loaded = {}; local _require = function(path, ...) if loaded[path] then     return loaded[path] end if preload[path] then     local func = preload[path]     local mod = func(...) or true     loaded[path] = mod     return mod end return oriRequire(path, ...) end local define = function(path, factory) preload[path] = factory end]]
+mergefilestr = mergefilestr..[[
+
 
 -- define modules start
 
 ]]
-print(projectdir..'/'..config.workdir)
 attrDir(projectdir..'/'..config.workdir, function(filepath)
     if getextension(filepath) == 'lua' then
         local route = filepath:sub(#(projectdir..'/'..config.workdir) + 2, -5)
